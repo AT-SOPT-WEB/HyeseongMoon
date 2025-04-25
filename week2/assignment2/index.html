@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>2주차 과제</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+    <h1>To Do List</h1>
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button data-filter="all">전체</button>
+            <button data-filter="completed">완료됨</button>
+            <button data-filter="incomplete">미완료</button>
+            <div class="priority-dropdown">
+                <button id="priority-filter-btn">중요도<i class="fas fa-chevron-down"></i>
+                </button>
+              <div class="priority-options">
+                <div data-priority="1">1순위</div>
+                <div data-priority="2">2순위</div>
+                <div data-priority="3">3순위</div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="todo-card">
+        <div class="form-section">
+            <input type="text" id="todo-input" placeholder="할 일 입력" />
+            <select id="priority-select">
+              <option value="">중요도 선택</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <button id="add-btn"><i class="fas fa-plus"></i>추가</button>
+          </div>
+        
+          <div class="bulk-actions">
+            <button id="mark-done-btn"><i class="fas fa-check"></i>완료</button>
+            <button id="delete-btn"><i class="fas fa-trash"></i>삭제</button>
+          </div>
+    
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="select-all" /></th>
+                <th>중요도</th>
+                <th>완료됨</th>
+                <th>할 일</th>
+              </tr>
+            </thead>
+            <tbody id="todo-body">
+              <!-- JS로 동적 렌더링 -->
+            </tbody>
+          </table>
+    </div>
+    
+      <script type="module" src="index.js"></script>
+      
+</body>
+</html>
