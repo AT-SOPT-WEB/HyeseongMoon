@@ -8,6 +8,11 @@ body {
 h1 {
     text-align: center;
     margin-bottom: 30px;
+    padding: 15px;
+    background-color: #ffbfd2;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 183, 197, 0.3);
 }
 
 .filter-section {
@@ -16,7 +21,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.filter-buttons, .bulk-actions, .form-sections {
+.filter-buttons, .bulk-actions {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,6 +35,7 @@ input, select, button {
     padding: 8px 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 button {
@@ -69,15 +75,6 @@ button:hover {
 
 .priority-options div:hover {
     background-color: #ffe2ee;
-}
-
-.form-section {
-    margin-bottom: 20px;
-}
-  
-input, select, button {
-    font-size: 16px;
-    padding: 8px;
 }
   
 table {
