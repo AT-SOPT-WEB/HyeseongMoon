@@ -117,7 +117,7 @@ td i {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
-  }
+}
   
 .form-section {
     display: flex;
@@ -132,6 +132,7 @@ td i {
 .form-section select {
     flex:1;
 }
+
 .form-section button {
     flex: 0 0 80px;
     background-color:#ff77a9;
