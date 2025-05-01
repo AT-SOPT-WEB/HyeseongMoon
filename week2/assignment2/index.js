@@ -1,10 +1,12 @@
-import { todos as initialTodos } from './todos.js';
+import { todos as TODO_DATA } from './todos.js';
 
 const STORAGE_KEY = 'todos';
 let todos = [];
 
 const todoInput = document.getElementById('todo-input');
 const prioritySelect = document.getElementById('priority-select');
+const selectedPriority = prioritySelect.querySelector('.selected');
+const selectOptions = prioritySelect.querySelectorAll('.select-options li');
 const addBtn = document.getElementById('add-btn');
 const todoBody = document.getElementById('todo-body');
 const selectAll = document.getElementById('select-all');
@@ -14,37 +16,38 @@ const priorityOptions = document.querySelectorAll('.priority-options div');
 
 let currentFilter = 'all';
 let currentPriority = null;
+let selectedPriorityValue = null;
 
 function loadTodos() {
     const stored = localStorage.getItem(STORAGE_KEY);
-    todos = stored ? JSON.parse(stored) : initialTodos;
+    todos = stored ? JSON.parse(stored) : TODO_DATA;
     if (!stored) saveTodos();
 }
-  
+
 function saveTodos() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
 }
-  
+
 function render() {
     todoBody.innerHTML = '';
     let filtered = todos;
-  
+
     if (currentFilter === 'completed') {
       filtered = todos.filter(t => t.completed);
     } else if (currentFilter === 'incomplete') {
       filtered = todos.filter(t => !t.completed);
     }
-  
+
     if (currentPriority) {
       filtered = filtered.filter(t => t.priority === currentPriority);
     }
-  
+
     filtered.forEach(todo => {
         const tr = document.createElement('tr');
         tr.draggable = true;
         tr.dataset.id = todo.id;
         if (todo.completed) tr.classList.add('completed');
-  
+
         tr.innerHTML = `
             <td><input type="checkbox" ${todo.completed ? 'checked' : ''}></td>
             <td>${todo.priority}</td>
@@ -54,7 +57,7 @@ function render() {
             </td>
             <td class="title">${todo.title}</td>
         `;
-  
+
         const checkbox = tr.querySelector('input[type="checkbox"]');
         if (checkbox) {
             checkbox.addEventListener('change', () => {
@@ -66,79 +69,95 @@ function render() {
 
         todoBody.appendChild(tr);
     });
-  
+
     const checkboxes = todoBody.querySelectorAll('input[type="checkbox"]');
     const allChecked = checkboxes.length && [...checkboxes].every(cb => cb.checked);
     selectAll.checked = allChecked;
-  
+
     enableDragAndDrop();
 }
-  
+
 function enableDragAndDrop() {
     let dragged;
-  
+
     todoBody.querySelectorAll('tr').forEach(row => {
       row.addEventListener('dragstart', () => {
         dragged = row;
         row.classList.add('dragging');
       });
-  
+
       row.addEventListener('dragend', () => {
-        dragged.classList.remove('dragging');
+        row.classList.remove('dragging');
         dragged = null;
-    
+
         const ids = [...todoBody.querySelectorAll('tr')].map(tr => +tr.dataset.id);
         todos.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
         saveTodos();
       });
-  
+
       row.addEventListener('dragover', e => {
         e.preventDefault();
         const after = [...todoBody.children].find(child => {
           return e.clientY <= child.getBoundingClientRect().top + child.offsetHeight / 2;
         });
-        if (after) todoBody.insertBefore(dragged, after);
-        else todoBody.appendChild(dragged);
+        if (after) {
+          todoBody.insertBefore(dragged, after)
+        } else {
+          todoBody.appendChild(dragged);
+        }
       });
     });
 }
-  
+
 addBtn.addEventListener('click', () => {
     const title = todoInput.value.trim();
-    const priority = parseInt(prioritySelect.value);
-  
-    if (!title || isNaN(priority)) {
+
+    if (!title || !selectedPriorityValue) {
       alert('할 일과 중요도를 모두 입력해주세요!');
       return;
     }
-  
+
+    const priority = parseInt(selectedPriorityValue);
     todos.push({ id: Date.now(), title, completed: false, priority });
     saveTodos();
     render();
-  
+
     todoInput.value = '';
     todoInput.placeholder = '할 일 입력';
-    prioritySelect.value = '';
+    selectedPriority.textContent = '중요도 선택';
+    selectedPriorityValue = null;
 });
-  
+
+prioritySelect.addEventListener('click', () => {
+  prioritySelect.classList.toggle('active');
+});
+
+selectOptions.forEach(option => {
+  option.addEventListener('click', () => {
+    selectedPriority.textContent = option.textContent;
+    selectedPriorityValue = option.dataset.value;
+    prioritySelect.classList.remove('active');
+  });
+});
+
 selectAll.addEventListener('change', () => {
     const checked = selectAll.checked;
     todos.forEach(t => t.completed = checked);
     saveTodos();
     render();
 });
-  
+
 filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       currentFilter = btn.dataset.filter;
       render();
     });
 });
-  
+
 priorityDropdown.querySelector('button').addEventListener('click', () => {
     priorityDropdown.classList.toggle('active');
 });
-  
+
 priorityOptions.forEach(opt => {
     opt.addEventListener('click', () => {
       currentPriority = parseInt(opt.dataset.priority);
@@ -152,38 +171,35 @@ function getCheckedTodoIds() {
       row.querySelector('input[type="checkbox"]').checked
     ).map(row => parseInt(row.dataset.id));
 }
-  
+
 document.getElementById('delete-btn').addEventListener('click', () => {
     const idsToDelete = getCheckedTodoIds();
     if (idsToDelete.length === 0) return alert("삭제할 항목을 선택하세요!");
-  
+
     todos = todos.filter(todo => !idsToDelete.includes(todo.id));
     saveTodos();
     render();
 });
-  
+
 document.getElementById('mark-done-btn').addEventListener('click', () => {
     const idsToMark = getCheckedTodoIds();
-    if{
-    (idsToMark.length === 0) return alert("완료할 항목을 선택하세요!");
-    } 
-  
+
+    if (idsToMark.length === 0) return alert("완료할 항목을 선택하세요!");
+
     const alreadyDone = todos.some(
       todo => idsToMark.includes(todo.id) && todo.completed
     );
-  
+
     if (alreadyDone) {
-      alert("이미 완료된 항목이 포함되어 있어 완료할 수 없습니다.");
-      return;
+      return alert("이미 완료된 항목이 포함되어 있어 완료할 수 없습니다.");
     }
-  
+
     todos = todos.map(todo =>
       idsToMark.includes(todo.id) ? { ...todo, completed: true } : todo
     );
     saveTodos();
     render();
 });
-  
 
 loadTodos();
 render();

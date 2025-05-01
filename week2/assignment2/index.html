@@ -29,12 +29,15 @@
     <div class="todo-card">
         <div class="form-section">
             <input type="text" id="todo-input" placeholder="할 일 입력" />
-            <select id="priority-select">
-              <option value="">중요도 선택</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
+            <div class="custom-select" id="priority-select">
+              <div class="selected">중요도 선택</div>
+              <ul class="select-option">
+                <li data-value="1">1순위</li>
+                <li data-value="2">2순위</li>
+                <li data-value="3">3순위</li>
+              </ul>
+            </div>
+            
             <button id="add-btn"><i class="fas fa-plus"></i>추가</button>
           </div>
         
