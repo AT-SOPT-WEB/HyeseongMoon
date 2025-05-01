@@ -164,7 +164,9 @@ document.getElementById('delete-btn').addEventListener('click', () => {
   
 document.getElementById('mark-done-btn').addEventListener('click', () => {
     const idsToMark = getCheckedTodoIds();
-    if (idsToMark.length === 0) return alert("완료할 항목을 선택하세요!");
+    if{
+    (idsToMark.length === 0) return alert("완료할 항목을 선택하세요!");
+    } 
   
     const alreadyDone = todos.some(
       todo => idsToMark.includes(todo.id) && todo.completed
