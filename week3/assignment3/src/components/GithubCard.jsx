@@ -3,20 +3,20 @@ import { css } from '@emotion/react';
 
 const cardStyle = css`
   position: relative;
-  border: 2px solid #3b82f6;
+  border: 0.125rem solid #3b82f6;
   border-radius: 12px;
   padding: 1.5rem;
-  width: 300px;
+  width: 18.75rem;
   margin: 1rem auto;
   background-color: #f9fafb;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
   text-align: center;
 `;
 
 const closeBtn = css`
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: 0.5rem;
+  right: 0.75rem;
   border: none;
   background: transparent;
   font-size: 1.2rem;
@@ -28,8 +28,8 @@ const closeBtn = css`
 `;
 
 const avatar = css`
-  width: 100px;
-  height: 100px;
+  width: 6.25rem;
+  height: 6.25rem;
   border-radius: 50%;
   margin-bottom: 1rem;
 `;

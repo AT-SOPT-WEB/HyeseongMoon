@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import GithubCard from './GithubCard';
 import SearchHistory from './SearchHistory';
 import Spinner from './Spinner';
+import { getStorage, setStorage } from '../utils/storage';
 
 const containerStyle = css`
   text-align: center;
@@ -13,9 +14,9 @@ const containerStyle = css`
 const inputStyle = css`
   padding: 0.5rem 1rem;
   font-size: 1.1rem;
-  width: 300px;
-  border: 2px solid #3b82f6;
-  border-radius: 10px;
+  width: 18.75rem;
+  border: 0.125rem solid #3b82f6;
+  border-radius: 0.625rem;
   margin-bottom: 1rem;
 `;
 
@@ -31,9 +32,17 @@ function GithubSearch() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem('github-history');
-    if (stored) setHistory(JSON.parse(stored));
+    const stored = getStorage('github-history');
+    if (stored) setHistory(stored);
   }, []);
+
+  const resetUserInfo = () => {
+    setUserInfo({ status: 'idle', data: null });
+  };
+
+  const handleClose = () => {
+    resetUserInfo();
+  };
 
   const getUserInfo = async (user) => {
     setUserInfo({ status: 'pending', data: null });
@@ -52,17 +61,18 @@ function GithubSearch() {
     if (history.includes(user)) return;
     const updated = [...history.slice(-2), user];
     setHistory(updated);
-    localStorage.setItem('github-history', JSON.stringify(updated));
+    setStorage('github-history', updated);
   };
 
   const deleteHistory = (user) => {
     const updated = history.filter((h) => h !== user);
     setHistory(updated);
-    localStorage.setItem('github-history', JSON.stringify(updated));
+    setStorage('github-history', updated);
   };
 
   const handleSubmit = () => {
-    if (username.trim()) getUserInfo(username.trim());
+    const trimmedUsername = username.trim();
+    if (trimmedUsername) getUserInfo(trimmedUsername);
     setUsername('');
   };
 
@@ -88,16 +98,11 @@ function GithubSearch() {
       />
 
       {userInfo.status === 'pending' && <Spinner />}
-
       {userInfo.status === 'rejected' && (
         <p css={errorStyle}>검색 결과를 찾을 수 없습니다.</p>
       )}
-
       {userInfo.status === 'resolved' && (
-        <GithubCard
-          data={userInfo.data}
-          onClose={() => setUserInfo({ status: 'idle', data: null })}
-        />
+        <GithubCard data={userInfo.data} onClose={handleClose} />
       )}
     </div>
   );
