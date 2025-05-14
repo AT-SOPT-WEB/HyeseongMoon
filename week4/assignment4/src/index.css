@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 직접 정의한 커스텀 스타일 */
+.my-button {
+  @apply bg-pink-500 text-white py-2 px-4 rounded;
+}
