@@ -26,7 +26,7 @@ const LoginForm = ({ id, setId, pw, setPw, onLogin }: Props) => {
       />
       <button
         onClick={onLogin}
-        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+        className="w-full bg-pink-500 text-white py-2 rounded hover:bg-pink-600 transition"
       >
         로그인
       </button>

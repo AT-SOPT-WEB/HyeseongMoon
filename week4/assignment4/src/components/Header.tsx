@@ -26,7 +26,7 @@ const Header = () => {
         <Link to="/mypage" className="hover:text-blue-500">
           내 정보
         </Link>
-        <Link to="/mypage/member" className="hover:text-blue-500">
+        <Link to="/search" className="hover:text-blue-500">
           회원 조회
         </Link>
         <button onClick={handleLogout} className="hover:text-red-500">
@@ -49,7 +49,7 @@ const Header = () => {
           <Link to="/mypage" onClick={() => setIsMobileMenuOpen(false)}>
             내 정보
           </Link>
-          <Link to="/mypage/member" onClick={() => setIsMobileMenuOpen(false)}>
+          <Link to="/search" onClick={() => setIsMobileMenuOpen(false)}>
             회원 조회
           </Link>
           <button onClick={handleLogout}>로그아웃</button>
