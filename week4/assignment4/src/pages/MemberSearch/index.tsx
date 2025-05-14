@@ -1,12 +1,22 @@
 import { useState } from "react";
+import axios from "axios";
 
 const MemberSearch = () => {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<string[]>([]);
 
-  const handleSearch = () => {
-    // 임시 결과
-    setResult([`검색어 '${query}'와 관련된 유저 1`, "유저 2"]);
+  const handleSearch = async () => {
+    try {
+      const endpoint = query.trim()
+        ? `https://api.sopt.org/members?nickname=${encodeURIComponent(query)}`
+        : "https://api.sopt.org/members";
+
+      const response = await axios.get(endpoint);
+      setResult(response.data.members); // API 응답 구조에 따라 조정 필요
+    } catch (error) {
+      console.error("회원 조회 실패:", error);
+      alert("회원 조회에 실패했습니다.");
+    }
   };
 
   return (
@@ -29,12 +39,12 @@ const MemberSearch = () => {
       </button>
 
       <ul className="flex flex-wrap gap-3 justify-center mt-6">
-        {result.map((r, idx) => (
+        {result.map((member, idx) => (
           <li
             key={idx}
             className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full shadow text-sm"
           >
-            {r}
+            {member}
           </li>
         ))}
       </ul>

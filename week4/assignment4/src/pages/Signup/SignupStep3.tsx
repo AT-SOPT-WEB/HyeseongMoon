@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   nickname: string;
   setNickname: (value: string) => void;

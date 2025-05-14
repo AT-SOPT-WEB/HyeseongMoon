@@ -18,6 +18,7 @@ const Signup = () => {
   const handleSignup = async () => {
     try {
       await axios.post("https://api.sopt.org/signup", { id, pw, nickname });
+      localStorage.setItem("nickname", nickname); // 닉네임 저장
       alert(`${nickname}님, 회원가입이 완료되었습니다!`);
       navigate("/");
     } catch {
